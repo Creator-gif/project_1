@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Список лабораторных работ</h2>
+<div class="list-group">
+    {% for assignment in object_list %}
+    <div class="list-group-item">
+        <h5>{{ assignment.title }}</h5>
+        <p>{{ assignment.description|truncatechars:100 }}</p>
+        <small>Срок сдачи: {{ assignment.due_date|date:"d.m.Y" }}</small>
+        
+        {% if user.is_student %}
+        <div class="mt-2">
+            <a href="#" class="btn btn-sm btn-primary">Загрузить решение</a>
+        </div>
+        {% endif %}
+    </div>
+    {% empty %}
+    <div class="list-group-item">
+        Пока нет заданий
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
