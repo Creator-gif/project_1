@@ -1,3 +1,6 @@
-from django.shortcuts import render
+from django.views.generic import ListView
+from .models import Assignment
 
-# Create your views here.
+class AssignmentListView(ListView):
+    model = Assignment  # Используем нашу модель
+    template_name = 'assignments/list.html'  # Используем этот шаблон
