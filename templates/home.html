@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Добро пожаловать в систему!</h1>
+{% if user.is_authenticated %}
+    <div class="alert alert-info">
+        Вы вошли как: 
+        {% if user.is_teacher %}👨‍🏫 Преподаватель{% else %}👨‍🎓 Студент{% endif %} 
+        <strong>{{ user.username }}</strong>
+    </div>
+{% else %}
+    <p>Пожалуйста, <a href="/login/">войдите</a> в систему</p>
+{% endif %}
+{% endblock %}
