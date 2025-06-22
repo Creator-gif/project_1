@@ -4,6 +4,8 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     is_teacher = models.BooleanField(default=False)
     is_student = models.BooleanField(default=False)
+    is_approved = models.BooleanField(default=False, verbose_name="Подтверждён администратором")  #
+    is_active = models.BooleanField(default=True, verbose_name="Активен")  # Active status of the user
 
     groups = models.ManyToManyField(
         'auth.Group',

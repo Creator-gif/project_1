@@ -3,25 +3,16 @@ from django.contrib.auth.admin import UserAdmin
 from .models import User
 
 class CustomUserAdmin(UserAdmin):
-    # Добавляем кастомные поля в форму редактирования
     fieldsets = UserAdmin.fieldsets + (
-        ('Custom Fields', {'fields': ('is_teacher', 'is_student')}),
+        ('Custom Fields', {'fields': ('is_teacher', 'is_student', 'is_approved')}),
     )
-    # Добавляем кастомные поля в список пользователей
-    list_display = ('username', 'email', 'first_name', 'last_name', 'is_teacher', 'is_student')
-
-
-    # Фильтры для списка пользователей
-    list_filter = ('is_teacher', 'is_student')
-    
-    # Поиск по полям
+    list_display = ('username', 'email', 'first_name', 'last_name', 'is_teacher', 'is_student', 'is_approved')
+    list_filter = ('is_teacher', 'is_student', 'is_approved')
     search_fields = ('username', 'email', 'first_name', 'last_name')
-    
-    # Группировка полей в форме создания
     add_fieldsets = UserAdmin.add_fieldsets + (
         ('Custom Fields', {
-            'fields': ('is_teacher', 'is_student'),
+            'fields': ('is_teacher', 'is_student', 'is_approved'),
         }),
     )
-# Регистрируем кастомную модель
+
 admin.site.register(User, CustomUserAdmin)

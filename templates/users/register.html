@@ -1,0 +1,10 @@
+<!-- filepath: d:\VSCode\Lab_Projects\project_1\templates\users\register.html -->
+{% extends 'base.html' %}
+{% block content %}
+<h2>Регистрация</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+</form>
+{% endblock %}
