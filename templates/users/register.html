@@ -1,10 +1,46 @@
 <!-- filepath: d:\VSCode\Lab_Projects\project_1\templates\users\register.html -->
 {% extends 'base.html' %}
 {% block content %}
-<h2>Регистрация</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
-</form>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+
+      <h2 class="text-center mb-4">Регистрация пользователя</h2>
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        {# Основные поля (username, имя, фамилия, пароли) #}
+        {% for field in form %}
+          {% if field.name != 'is_student' and field.name != 'is_teacher' %}
+            <div class="mb-3">
+              <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+              {{ field }}
+              {% if field.errors %}
+                <div class="text-danger small">{{ field.errors|striptags }}</div>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        {# Отдельно стилизуем чекбоксы #}
+        <div class="form-check mb-2">
+          {{ form.is_student }}
+          <label class="form-check-label" for="{{ form.is_student.id_for_label }}">
+            {{ form.is_student.label }}
+          </label>
+        </div>
+        <div class="form-check mb-4">
+          {{ form.is_teacher }}
+          <label class="form-check-label" for="{{ form.is_teacher.id_for_label }}">
+            {{ form.is_teacher.label }}
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Зарегистрироваться</button>
+      </form>
+
+    </div>
+  </div>
+</div>
 {% endblock %}
