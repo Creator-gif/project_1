@@ -1,0 +1,10 @@
+<!-- filepath: d:\VSCode\Lab_Projects\project_1\templates\assignments\edit.html -->
+{% extends 'base.html' %}
+{% block content %}
+<h2>Редактировать задание</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+</form>
+{% endblock %}

@@ -1,18 +1,23 @@
+<!-- filepath: d:\VSCode\Lab_Projects\project_1\templates\assignments\list.html -->
 {% extends 'base.html' %}
 
 {% block content %}
 <h2>Список лабораторных работ</h2>
+{% if user.is_teacher %}
+    <a href="{% url 'assignment-create' %}" class="btn btn-success mb-3">Новое задание</a>
+{% endif %}
 <div class="list-group">
     {% for assignment in object_list %}
     <div class="list-group-item">
         <h5>{{ assignment.title }}</h5>
         <p>{{ assignment.description|truncatechars:100 }}</p>
-        <small>Срок сдачи: {{ assignment.due_date|date:"d.m.Y" }}</small>
-        
-        {% if user.is_student %}
-        <div class="mt-2">
-            <a href="#" class="btn btn-sm btn-primary">Загрузить решение</a>
-        </div>
+        <small>Срок сдачи: {{ assignment.due_date|date:"d.m.Y H:i" }}</small>
+        <br>
+        <span class="badge bg-{% if assignment.status == 'published' %}success{% else %}secondary{% endif %}">
+            {{ assignment.get_status_display }}
+        </span>
+        {% if user.is_teacher %}
+            <a href="{% url 'assignment-edit' assignment.pk %}" class="btn btn-sm btn-outline-primary ms-2">Редактировать</a>
         {% endif %}
     </div>
     {% empty %}
