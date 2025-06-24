@@ -9,9 +9,13 @@
 <div class="list-group">
     {% for assignment in object_list %}
     <div class="list-group-item">
-        <h5>{{ assignment.title }}</h5>
+        <h5><a href="{% url 'assignment-detail' assignment.pk %}">{{ assignment.title }}</a></h5>
         <p>{{ assignment.description|truncatechars:100 }}</p>
         <small>Срок сдачи: {{ assignment.due_date|date:"d.m.Y H:i" }}</small>
+        <br>
+        <small class="text-muted">
+            Преподаватель: {{ assignment.created_by.get_full_name|default:assignment.created_by.username }}
+        </small>
         <br>
         <span class="badge bg-{% if assignment.status == 'published' %}success{% else %}secondary{% endif %}">
             {{ assignment.get_status_display }}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card mb-4">
+    <div class="card-body">
+        <h1 class="card-title">{{ assignment.title }}</h1>
+        <p class="card-text">{{ assignment.description }}</p>
+        
+        <div class="mb-3">
+            <strong>Срок сдачи:</strong> 
+            <span class="{% if assignment.due_date < current_time %}text-danger{% endif %}">
+                {{ assignment.due_date|date:"d.m.Y H:i" }}
+            </span>
+        </div>
+        
+        <div class="mb-3">
+            <strong>Максимальный балл:</strong> {{ assignment.max_score }}
+        </div>
+        
+        {% if user_submission %}
+            <div class="alert alert-info">
+                <h5>Ваше решение</h5>
+                <p>
+                    Загружено: {{ user_submission.submitted_at|date:"d.m.Y H:i" }}
+                    {% if user_submission.is_late %}<span class="badge bg-danger">Сдано с опозданием</span>{% endif %}
+                </p>
+                <a href="{{ user_submission.file.url }}" class="btn btn-sm btn-outline-primary">
+                    Скачать ваше решение
+                </a>
+                
+                {% if user_submission.grade %}
+                    <div class="mt-3">
+                        <strong>Оценка:</strong> {{ user_submission.grade }}/{{ assignment.max_score }}
+                        {% if user_submission.feedback %}
+                            <div class="alert alert-light mt-2">
+                                <strong>Комментарий преподавателя:</strong>
+                                {{ user_submission.feedback }}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        {% elif user.is_student and assignment.status == 'published' and assignment.due_date > current_time and not user_submission %}
+            <p>DEBUG: user.is_student={{ user.is_student }}, assignment.status={{ assignment.status }}, assignment.due_date={{ assignment.due_date }}, current_time={{ current_time }}, user_submission={{ user_submission }}</p>
+            <a href="{% url 'submission-create' assignment.pk %}" class="btn btn-primary">
+                Загрузить решение
+            </a>
+        {% endif %}
+        
+        {% if user.is_teacher and assignment.created_by == user %}
+            <a href="{% url 'submission-list' assignment.pk %}" class="btn btn-outline-secondary mt-3">
+                Смотреть работы студентов
+            </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

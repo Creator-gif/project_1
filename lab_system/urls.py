@@ -19,6 +19,8 @@ from django.urls import path, include
 from django.views.generic import TemplateView  # Для простых страниц
 from users.views import CustomLoginView
 from users.views import CustomLogoutView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),          # Админка
@@ -27,4 +29,4 @@ urlpatterns = [
     path('login/', CustomLoginView.as_view(), name='login'), # Добавьте этот путь для входа:
     path('logout/', CustomLogoutView.as_view(), name='logout'), 
     path('users/', include('users.urls')),    # Все пути для пользователей
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

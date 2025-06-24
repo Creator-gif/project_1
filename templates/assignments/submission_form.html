@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h2>Загрузка решения: {{ assignment.title }}</h2>
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label class="form-label">Файл решения</label>
+                <input type="file" class="form-control" name="file" required>
+                <small class="form-text">Поддерживаемые форматы: PDF, DOC, DOCX, ZIP (макс. 20MB)</small>
+            </div>
+            
+            <div class="alert alert-warning">
+                <strong>Внимание!</strong> После отправки вы не сможете изменить файл.
+                Убедитесь, что загружаете правильную версию.
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Отправить решение</button>
+            <a href="{% url 'assignment-detail' pk=assignment.pk %}" class="btn btn-secondary">Отмена</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
