@@ -1,10 +1,37 @@
 <!-- filepath: d:\VSCode\Lab_Projects\project_1\templates\assignments\new.html -->
 {% extends 'base.html' %}
 {% block content %}
-<h2>Новое задание</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-success">Сохранить</button>
-</form>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Новое задание</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label" for="{{ form.title.id_for_label }}">Название задания</label>
+                            {{ form.title }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="{{ form.description.id_for_label }}">Описание</label>
+                            {{ form.description }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="{{ form.due_date.id_for_label }}">Срок сдачи</label>
+                            {{ form.due_date }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="{{ form.status.id_for_label }}">Статус</label>
+                            {{ form.status }}
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Сохранить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

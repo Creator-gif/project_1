@@ -12,3 +12,10 @@
     <p>Пожалуйста, <a href="/login/">войдите</a> в систему</p>
 {% endif %}
 {% endblock %}
+
+{% block footer %}
+    {% now "Y" as now %}
+    <footer class="bg-dark text-white text-center py-3" style="position:fixed; left:0; bottom:0; width:100%; z-index:100;">
+        &copy; {{ now }} Лабораторный практикум &mdash; Все права защищены
+    </footer>
+{% endblock %}
