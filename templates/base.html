@@ -12,14 +12,19 @@
             <div>
                 {% if user.is_authenticated %}
                     <a class="text-white" href="/assignments/">Задания</a>
+                    {% if user.is_teacher %}
+                        <a class="text-white ms-3" href="{% url 'teacher-profile' %}">Личный кабинет</a>
+                    {% elif user.is_student %}
+                        <a class="text-white ms-3" href="{% url 'student-profile' %}">Личный кабинет</a>
+                    {% endif %}
                     <form action="{% url 'logout' %}" method="post" style="display:inline;">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-link text-white ms-3" style="padding:0; border:none; background:none;">Выйти</button>
                     </form>
                 {% else %}
-    <a class="nav-link text-white" href="{% url 'login' %}">Войти</a>
-    <a class="nav-link text-white" href="{% url 'register' %}">Регистрация</a>
-{% endif %}
+                    <a class="nav-link text-white" href="{% url 'login' %}">Войти</a>
+                    <a class="nav-link text-white" href="{% url 'register' %}">Регистрация</a>
+                {% endif %}
             </div>
         </div>
     </nav>

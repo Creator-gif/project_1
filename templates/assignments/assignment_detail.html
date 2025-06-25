@@ -41,7 +41,6 @@
                 {% endif %}
             </div>
         {% elif user.is_student and assignment.status == 'published' and assignment.due_date > current_time and not user_submission %}
-            <p>DEBUG: user.is_student={{ user.is_student }}, assignment.status={{ assignment.status }}, assignment.due_date={{ assignment.due_date }}, current_time={{ current_time }}, user_submission={{ user_submission }}</p>
             <a href="{% url 'submission-create' assignment.pk %}" class="btn btn-primary">
                 Загрузить решение
             </a>
