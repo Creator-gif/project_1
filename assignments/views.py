@@ -1,7 +1,7 @@
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Assignment, Submission
-from .forms import AssignmentForm
+from .forms import AssignmentForm, SubmissionGradeForm
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseForbidden
 from django.urls import reverse_lazy
@@ -104,7 +104,7 @@ class SubmissionListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
 class SubmissionGradeView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Submission
-    fields = ['grade', 'feedback']
+    form_class = SubmissionGradeForm  # <-- добавьте это!
     template_name = 'assignments/submission_grade.html'
 
     def get_success_url(self):
