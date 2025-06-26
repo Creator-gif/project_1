@@ -11,15 +11,48 @@
             <a class="navbar-brand" href="/">Главная</a>
             <div>
                 {% if user.is_authenticated %}
-                    <a class="text-white" href="/assignments/">Задания</a>
+                    <a class="text-white text-decoration-none" href="/assignments/">Задания</a>
                     {% if user.is_teacher %}
-                        <a class="text-white ms-3" href="{% url 'teacher-profile' %}">Личный кабинет</a>
+                        <a class="text-white ms-3 text-decoration-none" href="{% url 'teacher-profile' %}">Личный кабинет</a>
                     {% elif user.is_student %}
-                        <a class="text-white ms-3" href="{% url 'student-profile' %}">Личный кабинет</a>
+                        <a class="text-white ms-3 text-decoration-none" href="{% url 'student-profile' %}">Личный кабинет</a>
                     {% endif %}
+
+                    <!-- Иконка уведомлений -->
+                    <a id="notif-bell" class="text-warning ms-3 text-decoration-none" href="#" style="font-size: 1.3rem; position: relative;">
+                        {% if unread_notes and unread_notes|length > 0 %}
+                            <span style="font-size:1.3rem;">&#128276;</span>
+                            <span class="badge bg-danger"
+                                  style="position:absolute;top:0;right:-10px;font-size:0.7rem;padding:1px 4px;min-width:14px;">
+                                {{ unread_notes|length }}
+                            </span>
+                        {% else %}
+                            <span style="font-size:1.3rem;">&#128276;</span>
+                        {% endif %}
+                    </a>
+
+                    <div id="notif-dropdown" class="shadow rounded bg-white p-2" 
+                         style="display:none; position:absolute; left:50%; transform:translateX(-50%); top:70px; min-width:320px; z-index:1050;">
+                        <ul class="list-unstyled mb-1">
+                            {% for note in all_notes|slice:5 %}
+                            <li>
+                                <a class="dropdown-item {% if not note.is_read %}fw-bold{% endif %}" href="{{ note.url }}">
+                                    {{ note.icon }} {{ note.message|truncatechars:40 }}
+                                    <small class="text-muted">{{ note.created_at|timesince }} назад</small>
+                                </a>
+                            </li>
+                            {% empty %}
+                            <li><span class="dropdown-item">Нет новых уведомлений</span></li>
+                            {% endfor %}
+                        </ul>
+                        <div class="border-top pt-2 text-center">
+                            <a class="dropdown-item" href="{% url 'notifications-list' %}">Все уведомления</a>
+                        </div>
+                    </div>
+
                     <form action="{% url 'logout' %}" method="post" style="display:inline;">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-link text-white ms-3" style="padding:0; border:none; background:none;">Выйти</button>
+                        <button type="submit" class="btn btn-link text-white ms-3 text-decoration-none" style="padding:0; border:none; background:none;">Выйти</button>
                     </form>
                 {% else %}
                     <a class="nav-link text-white" href="{% url 'login' %}">Войти</a>
@@ -34,5 +67,21 @@
         {% block content %}{% endblock %}
     </div>
     {% block footer %}{% endblock %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const bell = document.getElementById('notif-bell');
+    const dropdown = document.getElementById('notif-dropdown');
+    document.addEventListener('click', function(e) {
+        if (bell.contains(e.target)) {
+            e.preventDefault();
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        } else if (!dropdown.contains(e.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
+});
+</script>
 </body>
 </html>

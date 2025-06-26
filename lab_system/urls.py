@@ -29,4 +29,5 @@ urlpatterns = [
     path('login/', CustomLoginView.as_view(), name='login'), # Добавьте этот путь для входа:
     path('logout/', CustomLogoutView.as_view(), name='logout'), 
     path('users/', include('users.urls')),    # Все пути для пользователей
+    path('notifications/', include('notifications.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
